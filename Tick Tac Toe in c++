@@ -1,0 +1,123 @@
+
+#include <iostream>
+using namespace std;
+
+void render(int arr[3][3]);
+void currentMove(int arr[3][3], int row, int col, int value);
+bool checkWin(int arr[3][3], int player);
+
+int main()
+{
+    //make the grid
+    int ttt[3][3] = { 0 };
+    //Making player 1 start
+    int player = 1;
+
+    //Letting the user know that player 1 is going first
+    cout << "Player 1 is going first" << endl;
+
+    //Make it so the code keep executing forever
+    while (true) 
+    {
+        //Rendering the grid
+        render(ttt);
+        cout << endl;
+
+        //Make container for row and col
+        int pick_Row;
+        int pick_Col;
+
+
+        //pick row
+        cout << "Pick the Row you want (0 = top row | 1 = middle row | 2 = bottom row):";
+        cin >> pick_Row;
+        cout << endl;
+
+        //pick col
+        cout << "Pick the Col you Want (0 = left col | 1 = middle col | 2 = right col):";
+        cin >> pick_Col;
+        cout << endl;
+        cout << "---------------------" << endl;
+
+        //Make a recorded move into the grid
+        currentMove(ttt, pick_Row, pick_Col, player);
+
+        //Checking to see if any player win
+        //Code was set so that if the return value is true then it would execute the block bellow
+        //if not then it would continue the game
+        if (checkWin(ttt, player)) 
+        {
+            render(ttt);
+            cout << "Player " << player << " wins!" << endl;
+            //This break make it so when there a winner the code stop executing
+            break;
+        }
+        
+        //After player make a move, then if it player 1 then it switch to player 2
+        if (player == 1)
+        {
+            player = 2;
+            cout << "Player 2 turn" << endl;
+            cout << "----------------" << endl;
+        }
+        else
+        {
+            player = 1;
+            cout << "Player 1 turn" << endl;
+            cout << "----------------" << endl;
+        }
+    }
+
+    
+    return 0;
+}
+
+//Render the Grid for palyer to see
+void render(int arr[3][3])
+{
+    for (int row = 0; row < 3; row++)
+    {
+        for (int col = 0; col < 3; col++)
+            cout << arr[row][col] << " ";
+        cout << endl;
+    }
+}
+
+//Update the move to the grid
+void currentMove(int arr[3][3], int row, int col, int value)
+{
+    arr[row][col] = value;
+}
+
+//check if either player win
+bool checkWin(int arr[3][3], int player) 
+{
+    // Check rows
+    for (int row = 0; row < 3; row++) {
+        if (arr[row][0] == player && arr[row][1] == player && arr[row][2] == player) 
+        {
+            return true;
+        }
+    }
+
+    // Check columns
+    for (int col = 0; col < 3; col++) {
+        if (arr[0][col] == player && arr[1][col] == player && arr[2][col] == player) 
+        {
+            return true;
+        }
+    }
+
+    // Check diagonals point left
+    if (arr[0][0] == player && arr[1][1] == player && arr[2][2] == player) 
+    {
+        return true;
+    }
+    //check diagonal point right
+    if (arr[0][2] == player && arr[1][1] == player && arr[2][0] == player) 
+    {
+        return true;
+    }
+
+    return false;
+}
